@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	var stopSignal chan struct{}
+	stopSignal := make(chan struct{})
 
 	group, ctx := errgroup.WithContext(context.Background())
 
