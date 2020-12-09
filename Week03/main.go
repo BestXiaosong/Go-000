@@ -1,8 +1,3 @@
-## 作业
-基于 errgroup 实现一个 http server 的启动和关闭 ，以及 linux signal 信号的注册和处理，要保证能够 一个退出，全部注销退出。
-##代码：
-
-```go
 package main
 
 import (
@@ -15,7 +10,6 @@ import (
 	"os/signal"
 	"syscall"
 )
-
 
 func main() {
 
@@ -81,11 +75,3 @@ func main() {
 
 	fmt.Println("all stopped!")
 }
-```
-## 运行并终止进程响应
-```
-main running
-receive quit signal
-http server 8081 ctx done
-http server 8080 ctx done
-err group wait err: receive quit signal
