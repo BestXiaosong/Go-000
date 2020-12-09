@@ -29,13 +29,15 @@ func main() {
 			Handler: nil,
 		}
 		go func() {
-			// 接收到 errGroup.Done 时终止http服务 并发送信号 已结束httpService
+			// 接收到 errGroup.Done 时终止http服务 并发送信号 已结束httpServer
 			<-ctx.Done()
-			fmt.Println("http server 8080 ctx done")
+			fmt.Printf("http server %s ctx done\n", server.Addr)
 			if err := server.Shutdown(context.Background()); err != nil {
-				fmt.Println("http server 8080 shutdown err :", err)
+				fmt.Printf("http server %s shutdown err :%s", server.Addr, err)
 			}
+
 			stopSignal <- struct{}{}
+
 		}()
 		return server.ListenAndServe()
 	})
@@ -46,10 +48,11 @@ func main() {
 			Handler: nil,
 		}
 		go func() {
+			// 接收到 errGroup.Done 时终止http服务 并发送信号 已结束httpService
 			<-ctx.Done()
-			fmt.Println("http server 8081 ctx done")
+			fmt.Printf("http server %s ctx done \n", server.Addr)
 			if err := server.Shutdown(context.Background()); err != nil {
-				fmt.Println("http server 8081 shutdown err :", err)
+				fmt.Printf("http server %s shutdown err :%s", server.Addr, err)
 			}
 			stopSignal <- struct{}{}
 		}()
@@ -77,7 +80,11 @@ func main() {
 	if err := group.Wait(); err != nil {
 		fmt.Println("err group wait err:", err.Error())
 	}
-	<-stopSignal
+
+	// 启动了两个httpServer 都结束后终止
+	for i := 0; i < 2; i++ {
+		<-stopSignal
+	}
 
 	fmt.Println("all stopped!")
 }
@@ -87,8 +94,8 @@ func main() {
 ```
 main running
 receive quit signal
-http server 8080 ctx done
-http server 8081 ctx done
+http server :8080 ctx done
+http server :8081 ctx done 
 err group wait err: receive quit signal
 all stopped!
 
