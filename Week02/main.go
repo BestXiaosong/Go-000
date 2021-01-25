@@ -1,4 +1,4 @@
-package Week02
+package main
 
 import (
 	"database/sql"
