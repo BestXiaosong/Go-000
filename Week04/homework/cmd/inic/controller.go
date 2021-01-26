@@ -5,8 +5,8 @@ type Controller struct {
 	Logic Logic
 }
 
-func NewController(model Model, logic Logic) *Controller {
-	return &Controller{
+func NewController(model Model, logic Logic) Controller {
+	return Controller{
 		Model: model,
 		Logic: logic,
 	}

@@ -5,5 +5,5 @@ type Logic struct {
 }
 
 func NewLogin() *Logic {
-	return &Logic{}
+	return &Logic{name: "ssssss"}
 }
